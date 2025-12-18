@@ -2,7 +2,7 @@
 
 require_once '../config.php';
 
-// Check admin access
+
 if (!isAdmin()) {
     redirect('../login.php');
 }
@@ -10,7 +10,7 @@ if (!isAdmin()) {
 $message = '';
 $message_type = '';
 
-// Handle add category
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_category'])) {
     $name = sanitize($_POST['name']);
     $description = sanitize($_POST['description']);
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['add_category'])) {
     }
 }
 
-// Handle delete category
+
 if (isset($_GET['delete'])) {
     $id = intval($_GET['delete']);
     mysqli_query($conn, "DELETE FROM categories WHERE id=$id");
@@ -33,7 +33,7 @@ if (isset($_GET['delete'])) {
     $message_type = "success";
 }
 
-// Get all categories with destination count
+
 $categories = mysqli_query($conn, "
     SELECT c.*, COUNT(d.id) as total_destinations 
     FROM categories c 
