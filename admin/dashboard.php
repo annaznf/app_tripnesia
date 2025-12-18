@@ -3,18 +3,18 @@
 
 require_once '../config.php';
 
-// Check admin access
+
 if (!isAdmin()) {
     redirect('../login.php');
 }
 
-// Get statistics
+
 $total_destinations = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM destinations"))['total'];
 $total_users = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM users WHERE role='user'"))['total'];
 $total_categories = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM categories"))['total'];
 $total_favorites = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM favorites"))['total'];
 
-// Get recent destinations
+
 $recent_destinations = mysqli_query($conn, "
     SELECT d.*, c.name as category_name 
     FROM destinations d 
