@@ -2,18 +2,16 @@
 
 require_once '../config.php';
 
-// Check admin access
 if (!isAdmin()) {
     redirect('../login.php');
 }
 
-// Get all categories
+
 $categories = mysqli_query($conn, "SELECT * FROM categories ORDER BY name");
 
 $error = '';
 $success = '';
 
-// Process form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = sanitize($_POST['name']);
     $category_id = intval($_POST['category_id']);
@@ -21,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $description = sanitize($_POST['description']);
     $rating = floatval($_POST['rating']);
     
-    // Handle image upload
     $image_name = '';
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
         $allowed = ['jpg', 'jpeg', 'png', 'gif'];
@@ -29,13 +26,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $filetype = pathinfo($filename, PATHINFO_EXTENSION);
         
         if (in_array(strtolower($filetype), $allowed)) {
-            // Create uploads directory if not exists
+            
             $upload_dir = '../uploads/destinations/';
             if (!file_exists($upload_dir)) {
                 mkdir($upload_dir, 0777, true);
             }
             
-            // Generate unique filename
+            
             $image_name = time() . '_' . uniqid() . '.' . $filetype;
             $upload_path = $upload_dir . $image_name;
             
@@ -47,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     
-    // Validate input
+    
     if (empty($error)) {
         if (empty($name) || empty($location) || empty($description)) {
             $error = "All fields are required!";
